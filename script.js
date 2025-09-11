@@ -1,8 +1,9 @@
-// Scoop Application JavaScript
+// Scoop Application JavaScript - Perplexity Style
 class ScoopApp {
     constructor() {
         this.initializeApp();
         this.setupEventListeners();
+        this.currentFilterPanel = null;
     }
 
     initializeApp() {
@@ -10,9 +11,11 @@ class ScoopApp {
         this.resultsSection = document.getElementById('resultsSection');
         this.loadingIndicator = document.getElementById('loadingIndicator');
         this.resultsContent = document.getElementById('resultsContent');
+        this.upgradeModal = document.getElementById('upgradeModal');
     }
 
     setupEventListeners() {
+        // Search functionality
         const searchBtn = document.getElementById('searchBtn');
         const queryInput = document.getElementById('queryInput');
 
@@ -22,12 +25,115 @@ class ScoopApp {
                 this.performSearch();
             }
         });
+
+        // Filter icons
+        const filterIcons = document.querySelectorAll('.filter-icon');
+        filterIcons.forEach(icon => {
+            icon.addEventListener('click', (e) => {
+                const filter = e.currentTarget.dataset.filter;
+                this.openFilterPanel(filter);
+            });
+        });
+
+        // Close filter panels
+        const closeButtons = document.querySelectorAll('.close-panel');
+        closeButtons.forEach(btn => {
+            btn.addEventListener('click', () => this.closeFilterPanel());
+        });
+
+        // Upgrade modal
+        const upgradeBtn = document.getElementById('upgradeBtn');
+        const closeModal = document.querySelector('.close-modal');
+        
+        upgradeBtn.addEventListener('click', () => this.openUpgradeModal());
+        closeModal.addEventListener('click', () => this.closeUpgradeModal());
+
+        // Close modal on outside click
+        this.upgradeModal.addEventListener('click', (e) => {
+            if (e.target === this.upgradeModal) {
+                this.closeUpgradeModal();
+            }
+        });
+
+        // Close filter panel on outside click
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('filter-panel')) {
+                this.closeFilterPanel();
+            }
+        });
+
+        // Platform option interactions
+        const platformOptions = document.querySelectorAll('.platform-option');
+        platformOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const checkbox = this.querySelector('input[type="checkbox"]');
+                checkbox.checked = !checkbox.checked;
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+
+        // Search input focus effects
+        queryInput.addEventListener('focus', function() {
+            this.parentElement.style.transform = 'scale(1.02)';
+        });
+        
+        queryInput.addEventListener('blur', function() {
+            this.parentElement.style.transform = 'scale(1)';
+        });
+    }
+
+    openFilterPanel(filterType) {
+        // Close current panel if open
+        if (this.currentFilterPanel) {
+            this.closeFilterPanel();
+        }
+
+        // Show the selected panel
+        const panel = document.getElementById(`${filterType}Panel`);
+        if (panel) {
+            panel.classList.add('show');
+            this.currentFilterPanel = panel;
+            
+            // Add active state to filter icon
+            const filterIcon = document.querySelector(`[data-filter="${filterType}"]`);
+            if (filterIcon) {
+                filterIcon.classList.add('active');
+            }
+        }
+    }
+
+    closeFilterPanel() {
+        if (this.currentFilterPanel) {
+            this.currentFilterPanel.classList.remove('show');
+            
+            // Remove active state from filter icon
+            const filterType = this.currentFilterPanel.id.replace('Panel', '');
+            const filterIcon = document.querySelector(`[data-filter="${filterType}"]`);
+            if (filterIcon) {
+                filterIcon.classList.remove('active');
+            }
+            
+            this.currentFilterPanel = null;
+        }
+    }
+
+    openUpgradeModal() {
+        this.upgradeModal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+
+    closeUpgradeModal() {
+        this.upgradeModal.classList.remove('show');
+        document.body.style.overflow = 'auto';
     }
 
     async performSearch() {
         const query = document.getElementById('queryInput').value.trim();
         if (!query) {
-            alert('Please enter a search query');
+            this.showNotification('Please enter a search query', 'error');
             return;
         }
 
@@ -38,6 +144,9 @@ class ScoopApp {
         this.resultsSection.style.display = 'block';
         this.loadingIndicator.style.display = 'block';
         this.resultsContent.style.display = 'none';
+
+        // Scroll to results
+        this.resultsSection.scrollIntoView({ behavior: 'smooth' });
 
         try {
             // Simulate API call delay
@@ -173,7 +282,7 @@ class ScoopApp {
     displayResults(data) {
         this.loadingIndicator.style.display = 'none';
         this.resultsContent.style.display = 'block';
-        this.resultsContent.classList.add('show', 'fade-in');
+        this.resultsContent.classList.add('show');
 
         const report = data.intelligenceReport;
         const platformResults = data.platformResults;
@@ -221,11 +330,49 @@ class ScoopApp {
         this.loadingIndicator.style.display = 'none';
         this.resultsContent.style.display = 'block';
         this.resultsContent.innerHTML = `
-            <div class="intelligence-report" style="background: #ffe6e6; border-left: 4px solid #ff4444;">
-                <h4 style="color: #cc0000;">Error</h4>
+            <div class="intelligence-report" style="background: #2a1a1a; border-left: 4px solid #ff4444;">
+                <h4 style="color: #ff6666;">Error</h4>
                 <p>${message}</p>
             </div>
         `;
+    }
+
+    showNotification(message, type = 'info') {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.textContent = message;
+        
+        // Style the notification
+        Object.assign(notification.style, {
+            position: 'fixed',
+            top: '20px',
+            right: '20px',
+            padding: '12px 20px',
+            borderRadius: '8px',
+            color: '#ffffff',
+            fontSize: '14px',
+            fontWeight: '500',
+            zIndex: '4000',
+            transform: 'translateX(100%)',
+            transition: 'transform 0.3s ease',
+            backgroundColor: type === 'error' ? '#ff4444' : '#10a37f'
+        });
+        
+        document.body.appendChild(notification);
+        
+        // Animate in
+        setTimeout(() => {
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 3000);
     }
 
     delay(ms) {
@@ -238,36 +385,40 @@ document.addEventListener('DOMContentLoaded', () => {
     new ScoopApp();
 });
 
-// Add some interactive features
+// Add smooth scrolling for anchor links
 document.addEventListener('DOMContentLoaded', () => {
-    // Add smooth scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
         });
     });
+});
 
-    // Add platform filter animations
-    const platformOptions = document.querySelectorAll('.platform-option');
-    platformOptions.forEach(option => {
-        option.addEventListener('click', function() {
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = 'scale(1)';
-            }, 150);
-        });
-    });
-
-    // Add search input focus effects
-    const queryInput = document.getElementById('queryInput');
-    queryInput.addEventListener('focus', function() {
-        this.parentElement.style.transform = 'scale(1.02)';
-    });
+// Add keyboard shortcuts
+document.addEventListener('keydown', (e) => {
+    // Escape key to close modals/panels
+    if (e.key === 'Escape') {
+        const app = window.scoopApp;
+        if (app) {
+            app.closeFilterPanel();
+            app.closeUpgradeModal();
+        }
+    }
     
-    queryInput.addEventListener('blur', function() {
-        this.parentElement.style.transform = 'scale(1)';
-    });
+    // Ctrl/Cmd + K to focus search
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        document.getElementById('queryInput').focus();
+    }
+});
+
+// Store app instance globally for keyboard shortcuts
+document.addEventListener('DOMContentLoaded', () => {
+    window.scoopApp = new ScoopApp();
 });

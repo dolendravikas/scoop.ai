@@ -9,106 +9,70 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="app-container">
-        <!-- Header -->
-        <header class="header">
-            <div class="logo">
-                <i class="fas fa-search"></i>
-                <h1>Scoop</h1>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-content">
+            <!-- Upgrade Section -->
+            <div class="upgrade-section">
+                <button class="upgrade-btn" id="upgradeBtn">
+                    <i class="fas fa-crown"></i>
+                    <span>Upgrade</span>
+                </button>
             </div>
-            <p class="tagline">Intelligent Social Media Intelligence Platform</p>
-        </header>
+            
+            <!-- User Profile -->
+            <div class="user-profile">
+                <div class="profile-pic">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="profile-info">
+                    <span class="username">Guest User</span>
+                    <span class="plan">Free Plan</span>
+                </div>
+            </div>
+        </div>
+    </aside>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Query Section -->
-            <section class="query-section">
-                <div class="query-container">
-                    <h2>What would you like to know?</h2>
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Centered Content -->
+        <div class="centered-content">
+            <!-- Logo -->
+            <div class="logo-section">
+                <h1 class="logo">Scoop</h1>
+            </div>
+
+            <!-- Search Section -->
+            <div class="search-section">
+                <div class="search-container">
                     <div class="search-box">
-                        <input type="text" id="queryInput" placeholder="e.g., Recent trends in RISC-V architecture" />
+                        <input type="text" id="queryInput" placeholder="Ask anything to ScoopAI" />
                         <button id="searchBtn" class="search-btn">
-                            <i class="fas fa-search"></i>
-                            Scoop It
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Filter Icons -->
+                    <div class="filter-icons">
+                        <button class="filter-icon" data-filter="platforms" title="Platforms">
+                            <i class="fas fa-globe"></i>
+                        </button>
+                        <button class="filter-icon" data-filter="ai-model" title="AI Model">
+                            <i class="fas fa-robot"></i>
+                        </button>
+                        <button class="filter-icon" data-filter="time" title="Time Range">
+                            <i class="fas fa-clock"></i>
+                        </button>
+                        <button class="filter-icon" data-filter="keywords" title="Keywords">
+                            <i class="fas fa-tags"></i>
                         </button>
                     </div>
                 </div>
-            </section>
-
-            <!-- Filters Section -->
-            <section class="filters-section">
-                <div class="filters-container">
-                    <h3>Customize Your Search</h3>
-                    
-                    <!-- Platform Filters -->
-                    <div class="filter-group">
-                        <h4>Social Media Platforms</h4>
-                        <div class="platform-filters">
-                            <label class="platform-option">
-                                <input type="checkbox" id="twitter" checked>
-                                <span class="platform-icon"><i class="fab fa-twitter"></i></span>
-                                <span>X (Twitter)</span>
-                            </label>
-                            <label class="platform-option">
-                                <input type="checkbox" id="linkedin" checked>
-                                <span class="platform-icon"><i class="fab fa-linkedin"></i></span>
-                                <span>LinkedIn</span>
-                            </label>
-                            <label class="platform-option">
-                                <input type="checkbox" id="reddit" checked>
-                                <span class="platform-icon"><i class="fab fa-reddit"></i></span>
-                                <span>Reddit</span>
-                            </label>
-                            <label class="platform-option">
-                                <input type="checkbox" id="quora" checked>
-                                <span class="platform-icon"><i class="fas fa-question-circle"></i></span>
-                                <span>Quora</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- AI Model Selection -->
-                    <div class="filter-group">
-                        <h4>AI Analysis Model</h4>
-                        <select id="aiModel" class="model-select">
-                            <option value="gpt-4">GPT-4 (Most Advanced)</option>
-                            <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Fast)</option>
-                            <option value="claude-3">Claude 3 (Anthropic)</option>
-                            <option value="gemini-pro">Gemini Pro (Google)</option>
-                        </select>
-                    </div>
-
-                    <!-- Time Filter -->
-                    <div class="filter-group">
-                        <h4>Time Range</h4>
-                        <div class="time-filters">
-                            <select id="timeValue" class="time-value">
-                                <option value="1">1</option>
-                                <option value="3">3</option>
-                                <option value="7">7</option>
-                                <option value="14">14</option>
-                                <option value="30">30</option>
-                            </select>
-                            <select id="timeUnit" class="time-unit">
-                                <option value="days">Days</option>
-                                <option value="weeks">Weeks</option>
-                                <option value="months">Months</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Keyword Filter -->
-                    <div class="filter-group">
-                        <h4>Additional Keywords (Optional)</h4>
-                        <input type="text" id="keywords" placeholder="Enter specific keywords to focus on" class="keyword-input">
-                    </div>
-                </div>
-            </section>
+            </div>
 
             <!-- Results Section -->
-            <section class="results-section" id="resultsSection" style="display: none;">
+            <div class="results-section" id="resultsSection" style="display: none;">
                 <div class="results-container">
-                    <h3>Intelligence Report</h3>
                     <div class="loading" id="loadingIndicator">
                         <div class="spinner"></div>
                         <p>Gathering intelligence from selected platforms...</p>
@@ -117,13 +81,128 @@
                         <!-- Results will be populated here -->
                     </div>
                 </div>
-            </section>
-        </main>
+            </div>
+        </div>
+    </main>
 
-        <!-- Footer -->
-        <footer class="footer">
-            <p>&copy; 2024 Scoop. All rights reserved.</p>
-        </footer>
+    <!-- Filter Panels -->
+    <div class="filter-panel" id="platformsPanel">
+        <div class="panel-header">
+            <h3>Select Platforms</h3>
+            <button class="close-panel">&times;</button>
+        </div>
+        <div class="panel-content">
+            <label class="platform-option">
+                <input type="checkbox" id="twitter" checked>
+                <span class="platform-icon"><i class="fab fa-twitter"></i></span>
+                <span>X (Twitter)</span>
+            </label>
+            <label class="platform-option">
+                <input type="checkbox" id="linkedin" checked>
+                <span class="platform-icon"><i class="fab fa-linkedin"></i></span>
+                <span>LinkedIn</span>
+            </label>
+            <label class="platform-option">
+                <input type="checkbox" id="reddit" checked>
+                <span class="platform-icon"><i class="fab fa-reddit"></i></span>
+                <span>Reddit</span>
+            </label>
+            <label class="platform-option">
+                <input type="checkbox" id="quora" checked>
+                <span class="platform-icon"><i class="fas fa-question-circle"></i></span>
+                <span>Quora</span>
+            </label>
+        </div>
+    </div>
+
+    <div class="filter-panel" id="aiModelPanel">
+        <div class="panel-header">
+            <h3>AI Model</h3>
+            <button class="close-panel">&times;</button>
+        </div>
+        <div class="panel-content">
+            <select id="aiModel" class="model-select">
+                <option value="gpt-4">GPT-4 (Most Advanced)</option>
+                <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Fast)</option>
+                <option value="claude-3">Claude 3 (Anthropic)</option>
+                <option value="gemini-pro">Gemini Pro (Google)</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="filter-panel" id="timePanel">
+        <div class="panel-header">
+            <h3>Time Range</h3>
+            <button class="close-panel">&times;</button>
+        </div>
+        <div class="panel-content">
+            <div class="time-filters">
+                <select id="timeValue" class="time-value">
+                    <option value="1">1</option>
+                    <option value="3">3</option>
+                    <option value="7">7</option>
+                    <option value="14">14</option>
+                    <option value="30">30</option>
+                </select>
+                <select id="timeUnit" class="time-unit">
+                    <option value="days">Days</option>
+                    <option value="weeks">Weeks</option>
+                    <option value="months">Months</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="filter-panel" id="keywordsPanel">
+        <div class="panel-header">
+            <h3>Keywords</h3>
+            <button class="close-panel">&times;</button>
+        </div>
+        <div class="panel-content">
+            <input type="text" id="keywords" placeholder="Enter specific keywords" class="keyword-input">
+        </div>
+    </div>
+
+    <!-- Upgrade Modal -->
+    <div class="upgrade-modal" id="upgradeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Upgrade Your Plan</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="current-plan">
+                    <h3>Current Plan: Free</h3>
+                    <ul>
+                        <li>5 searches per day</li>
+                        <li>Basic AI models</li>
+                        <li>Limited platforms</li>
+                    </ul>
+                </div>
+                <div class="upgrade-options">
+                    <div class="plan-option">
+                        <h4>Pro Plan - $19/month</h4>
+                        <ul>
+                            <li>Unlimited searches</li>
+                            <li>All AI models</li>
+                            <li>All platforms</li>
+                            <li>Advanced filters</li>
+                        </ul>
+                        <button class="upgrade-plan-btn">Upgrade to Pro</button>
+                    </div>
+                    <div class="plan-option">
+                        <h4>Enterprise - $99/month</h4>
+                        <ul>
+                            <li>Everything in Pro</li>
+                            <li>API access</li>
+                            <li>Custom integrations</li>
+                            <li>Priority support</li>
+                        </ul>
+                        <button class="upgrade-plan-btn">Upgrade to Enterprise</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="script.js"></script>

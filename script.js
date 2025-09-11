@@ -1,9 +1,13 @@
-// Scoop Application JavaScript - Perplexity Style
+// Scoop Application JavaScript - Enhanced Version
 class ScoopApp {
     constructor() {
         this.initializeApp();
         this.setupEventListeners();
         this.currentFilterPanel = null;
+        this.isRecording = false;
+        this.recognition = null;
+        this.timeUnits = ['days', 'weeks', 'months', 'years'];
+        this.timeUnitLabels = ['day', 'week', 'month', 'year'];
     }
 
     initializeApp() {
@@ -12,12 +16,95 @@ class ScoopApp {
         this.loadingIndicator = document.getElementById('loadingIndicator');
         this.resultsContent = document.getElementById('resultsContent');
         this.upgradeModal = document.getElementById('upgradeModal');
+        this.installModal = document.getElementById('installModal');
+        this.languageModal = document.getElementById('languageModal');
+        this.learnMoreModal = document.getElementById('learnMoreModal');
+        
+        // Initialize Web Speech API
+        this.initializeSpeechRecognition();
+        
+        // Initialize time sliders
+        this.initializeTimeSliders();
+    }
+
+    initializeSpeechRecognition() {
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            this.recognition = new SpeechRecognition();
+            this.recognition.continuous = false;
+            this.recognition.interimResults = false;
+            this.recognition.lang = 'en-US';
+
+            this.recognition.onresult = (event) => {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('queryInput').value = transcript;
+                this.isRecording = false;
+                this.updateVoiceButton();
+            };
+
+            this.recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                this.isRecording = false;
+                this.updateVoiceButton();
+                this.showNotification('Voice recognition failed. Please try again.', 'error');
+            };
+
+            this.recognition.onend = () => {
+                this.isRecording = false;
+                this.updateVoiceButton();
+            };
+        }
+    }
+
+    initializeTimeSliders() {
+        const timeValueSlider = document.getElementById('timeValueSlider');
+        const timeUnitSlider = document.getElementById('timeUnitSlider');
+        const timeValueDisplay = document.getElementById('timeValueDisplay');
+        const timeUnitDisplay = document.getElementById('timeUnitDisplay');
+
+        timeValueSlider.addEventListener('input', (e) => {
+            const value = parseInt(e.target.value);
+            timeValueDisplay.textContent = value;
+            this.updateTimeUnitLabel();
+        });
+
+        timeUnitSlider.addEventListener('input', (e) => {
+            const unitIndex = parseInt(e.target.value);
+            timeUnitDisplay.textContent = this.timeUnits[unitIndex];
+            this.updateTimeUnitLabel();
+        });
+
+        // Initialize display
+        this.updateTimeUnitLabel();
+    }
+
+    updateTimeUnitLabel() {
+        const timeValue = parseInt(document.getElementById('timeValueSlider').value);
+        const timeUnitIndex = parseInt(document.getElementById('timeUnitSlider').value);
+        const timeUnitDisplay = document.getElementById('timeUnitDisplay');
+        
+        // Auto-adjust singular/plural
+        const isPlural = timeValue > 1;
+        const unit = isPlural ? this.timeUnits[timeUnitIndex] : this.timeUnitLabels[timeUnitIndex];
+        timeUnitDisplay.textContent = unit;
+    }
+
+    updateVoiceButton() {
+        const voiceBtn = document.getElementById('voiceBtn');
+        if (this.isRecording) {
+            voiceBtn.classList.add('recording');
+            voiceBtn.innerHTML = '<i class="fas fa-stop"></i>';
+        } else {
+            voiceBtn.classList.remove('recording');
+            voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+        }
     }
 
     setupEventListeners() {
         // Search functionality
         const searchBtn = document.getElementById('searchBtn');
         const queryInput = document.getElementById('queryInput');
+        const voiceBtn = document.getElementById('voiceBtn');
 
         searchBtn.addEventListener('click', () => this.performSearch());
         queryInput.addEventListener('keypress', (e) => {
@@ -26,52 +113,80 @@ class ScoopApp {
             }
         });
 
-        // Filter icons
+        // Voice input
+        voiceBtn.addEventListener('click', () => this.toggleVoiceInput());
+
+        // Filter icons - inline panels
         const filterIcons = document.querySelectorAll('.filter-icon');
         filterIcons.forEach(icon => {
             icon.addEventListener('click', (e) => {
+                e.stopPropagation();
                 const filter = e.currentTarget.dataset.filter;
-                this.openFilterPanel(filter);
+                this.toggleInlineFilterPanel(filter);
             });
         });
 
-        // Close filter panels
-        const closeButtons = document.querySelectorAll('.close-panel');
-        closeButtons.forEach(btn => {
-            btn.addEventListener('click', () => this.closeFilterPanel());
-        });
-
-        // Upgrade modal
-        const upgradeBtn = document.getElementById('upgradeBtn');
-        const closeModal = document.querySelector('.close-modal');
-        
-        upgradeBtn.addEventListener('click', () => this.openUpgradeModal());
-        closeModal.addEventListener('click', () => this.closeUpgradeModal());
-
-        // Close modal on outside click
-        this.upgradeModal.addEventListener('click', (e) => {
-            if (e.target === this.upgradeModal) {
-                this.closeUpgradeModal();
-            }
-        });
-
-        // Close filter panel on outside click
+        // Close inline panels when clicking outside
         document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('filter-panel')) {
-                this.closeFilterPanel();
+            if (!e.target.closest('.filter-group')) {
+                this.closeAllInlinePanels();
             }
         });
 
-        // Platform option interactions
+        // AI Model selection
+        const aiModelOptions = document.querySelectorAll('input[name="aiModel"]');
+        aiModelOptions.forEach(option => {
+            option.addEventListener('change', () => {
+                this.closeAllInlinePanels();
+            });
+        });
+
+        // Platform options
         const platformOptions = document.querySelectorAll('.platform-option');
         platformOptions.forEach(option => {
-            option.addEventListener('click', function() {
+            option.addEventListener('click', function(e) {
+                e.stopPropagation();
                 const checkbox = this.querySelector('input[type="checkbox"]');
                 checkbox.checked = !checkbox.checked;
                 this.style.transform = 'scale(0.95)';
                 setTimeout(() => {
                     this.style.transform = 'scale(1)';
                 }, 150);
+            });
+        });
+
+        // Modal controls
+        const upgradeBtn = document.getElementById('upgradeBtn');
+        const installBtn = document.getElementById('installBtn');
+        const languageBtn = document.getElementById('languageBtn');
+        const learnMoreBtn = document.getElementById('learnMoreBtn');
+        
+        upgradeBtn.addEventListener('click', () => this.openModal('upgrade'));
+        installBtn.addEventListener('click', () => this.openModal('install'));
+        languageBtn.addEventListener('click', () => this.openModal('language'));
+        learnMoreBtn.addEventListener('click', () => this.openModal('learnMore'));
+
+        // Close modals
+        const closeButtons = document.querySelectorAll('.close-modal');
+        closeButtons.forEach(btn => {
+            btn.addEventListener('click', () => this.closeAllModals());
+        });
+
+        // Close modals on outside click
+        [this.upgradeModal, this.installModal, this.languageModal, this.learnMoreModal].forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    this.closeAllModals();
+                }
+            });
+        });
+
+        // Language selection
+        const languageOptions = document.querySelectorAll('input[name="language"]');
+        languageOptions.forEach(option => {
+            option.addEventListener('change', (e) => {
+                this.changeLanguage(e.target.value);
+                this.closeAllModals();
             });
         });
 
@@ -85,49 +200,91 @@ class ScoopApp {
         });
     }
 
-    openFilterPanel(filterType) {
+    toggleVoiceInput() {
+        if (!this.recognition) {
+            this.showNotification('Voice recognition not supported in this browser', 'error');
+            return;
+        }
+
+        if (this.isRecording) {
+            this.recognition.stop();
+        } else {
+            this.isRecording = true;
+            this.updateVoiceButton();
+            this.recognition.start();
+        }
+    }
+
+    toggleInlineFilterPanel(filterType) {
         // Close current panel if open
-        if (this.currentFilterPanel) {
-            this.closeFilterPanel();
+        if (this.currentFilterPanel && this.currentFilterPanel !== filterType) {
+            this.closeAllInlinePanels();
         }
 
-        // Show the selected panel
-        const panel = document.getElementById(`${filterType}Panel`);
+        // Toggle the selected panel
+        const panel = document.getElementById(`${filterType}PanelInline`);
         if (panel) {
-            panel.classList.add('show');
-            this.currentFilterPanel = panel;
-            
-            // Add active state to filter icon
-            const filterIcon = document.querySelector(`[data-filter="${filterType}"]`);
-            if (filterIcon) {
-                filterIcon.classList.add('active');
+            if (panel.classList.contains('show')) {
+                this.closeAllInlinePanels();
+            } else {
+                panel.classList.add('show');
+                this.currentFilterPanel = filterType;
+                
+                // Add active state to filter icon
+                const filterIcon = document.querySelector(`[data-filter="${filterType}"]`);
+                if (filterIcon) {
+                    filterIcon.classList.add('active');
+                }
             }
         }
     }
 
-    closeFilterPanel() {
-        if (this.currentFilterPanel) {
-            this.currentFilterPanel.classList.remove('show');
-            
-            // Remove active state from filter icon
-            const filterType = this.currentFilterPanel.id.replace('Panel', '');
-            const filterIcon = document.querySelector(`[data-filter="${filterType}"]`);
-            if (filterIcon) {
-                filterIcon.classList.remove('active');
-            }
-            
-            this.currentFilterPanel = null;
+    closeAllInlinePanels() {
+        const panels = document.querySelectorAll('.filter-panel-inline');
+        panels.forEach(panel => {
+            panel.classList.remove('show');
+        });
+
+        // Remove active state from all filter icons
+        const filterIcons = document.querySelectorAll('.filter-icon');
+        filterIcons.forEach(icon => {
+            icon.classList.remove('active');
+        });
+
+        this.currentFilterPanel = null;
+    }
+
+    openModal(modalType) {
+        this.closeAllModals();
+        const modal = document.getElementById(`${modalType}Modal`);
+        if (modal) {
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
         }
     }
 
-    openUpgradeModal() {
-        this.upgradeModal.classList.add('show');
-        document.body.style.overflow = 'hidden';
-    }
-
-    closeUpgradeModal() {
-        this.upgradeModal.classList.remove('show');
+    closeAllModals() {
+        [this.upgradeModal, this.installModal, this.languageModal, this.learnMoreModal].forEach(modal => {
+            modal.classList.remove('show');
+        });
         document.body.style.overflow = 'auto';
+    }
+
+    changeLanguage(langCode) {
+        const languageBtn = document.getElementById('languageBtn');
+        const languageNames = {
+            'en': 'English',
+            'es': 'Español',
+            'fr': 'Français',
+            'de': 'Deutsch',
+            'zh': '中文',
+            'ja': '日本語'
+        };
+        
+        if (languageNames[langCode]) {
+            languageBtn.querySelector('span').textContent = languageNames[langCode];
+            this.showNotification(`Language changed to ${languageNames[langCode]}`, 'success');
+        }
     }
 
     async performSearch() {
@@ -171,11 +328,20 @@ class ScoopApp {
         if (document.getElementById('reddit').checked) platforms.push('reddit');
         if (document.getElementById('quora').checked) platforms.push('quora');
 
+        // Get selected AI model
+        const selectedModel = document.querySelector('input[name="aiModel"]:checked');
+        const aiModel = selectedModel ? selectedModel.value : 'gpt-4';
+
+        // Get time values from sliders
+        const timeValue = parseInt(document.getElementById('timeValueSlider').value);
+        const timeUnitIndex = parseInt(document.getElementById('timeUnitSlider').value);
+        const timeUnit = this.timeUnits[timeUnitIndex];
+
         return {
             platforms,
-            aiModel: document.getElementById('aiModel').value,
-            timeValue: parseInt(document.getElementById('timeValue').value),
-            timeUnit: document.getElementById('timeUnit').value,
+            aiModel,
+            timeValue,
+            timeUnit,
             keywords: document.getElementById('keywords').value.trim()
         };
     }
@@ -356,7 +522,7 @@ class ScoopApp {
             zIndex: '4000',
             transform: 'translateX(100%)',
             transition: 'transform 0.3s ease',
-            backgroundColor: type === 'error' ? '#ff4444' : '#10a37f'
+            backgroundColor: type === 'error' ? '#ff4444' : type === 'success' ? '#10a37f' : '#2a2a2a'
         });
         
         document.body.appendChild(notification);
@@ -370,7 +536,9 @@ class ScoopApp {
         setTimeout(() => {
             notification.style.transform = 'translateX(100%)';
             setTimeout(() => {
-                document.body.removeChild(notification);
+                if (document.body.contains(notification)) {
+                    document.body.removeChild(notification);
+                }
             }, 300);
         }, 3000);
     }
@@ -382,32 +550,16 @@ class ScoopApp {
 
 // Initialize the app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new ScoopApp();
-});
-
-// Add smooth scrolling for anchor links
-document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
+    window.scoopApp = new ScoopApp();
 });
 
 // Add keyboard shortcuts
 document.addEventListener('keydown', (e) => {
     // Escape key to close modals/panels
     if (e.key === 'Escape') {
-        const app = window.scoopApp;
-        if (app) {
-            app.closeFilterPanel();
-            app.closeUpgradeModal();
+        if (window.scoopApp) {
+            window.scoopApp.closeAllInlinePanels();
+            window.scoopApp.closeAllModals();
         }
     }
     
@@ -416,9 +568,12 @@ document.addEventListener('keydown', (e) => {
         e.preventDefault();
         document.getElementById('queryInput').focus();
     }
-});
-
-// Store app instance globally for keyboard shortcuts
-document.addEventListener('DOMContentLoaded', () => {
-    window.scoopApp = new ScoopApp();
+    
+    // Space to toggle voice input (when search is focused)
+    if (e.key === ' ' && document.activeElement.id === 'queryInput') {
+        e.preventDefault();
+        if (window.scoopApp) {
+            window.scoopApp.toggleVoiceInput();
+        }
+    }
 });

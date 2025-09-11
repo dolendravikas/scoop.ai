@@ -20,6 +20,14 @@
                 </button>
             </div>
             
+            <!-- Install Section -->
+            <div class="install-section">
+                <button class="install-btn" id="installBtn">
+                    <i class="fas fa-download"></i>
+                    <span>Install App</span>
+                </button>
+            </div>
+            
             <!-- User Profile -->
             <div class="user-profile">
                 <div class="profile-pic">
@@ -47,6 +55,9 @@
                 <div class="search-container">
                     <div class="search-box">
                         <input type="text" id="queryInput" placeholder="Ask anything to ScoopAI" />
+                        <button id="voiceBtn" class="voice-btn" title="Voice Input">
+                            <i class="fas fa-microphone"></i>
+                        </button>
                         <button id="searchBtn" class="search-btn">
                             <i class="fas fa-arrow-up"></i>
                         </button>
@@ -54,18 +65,100 @@
                     
                     <!-- Filter Icons -->
                     <div class="filter-icons">
-                        <button class="filter-icon" data-filter="platforms" title="Platforms">
-                            <i class="fas fa-globe"></i>
-                        </button>
-                        <button class="filter-icon" data-filter="ai-model" title="AI Model">
-                            <i class="fas fa-robot"></i>
-                        </button>
-                        <button class="filter-icon" data-filter="time" title="Time Range">
-                            <i class="fas fa-clock"></i>
-                        </button>
-                        <button class="filter-icon" data-filter="keywords" title="Keywords">
-                            <i class="fas fa-tags"></i>
-                        </button>
+                        <div class="filter-group">
+                            <button class="filter-icon" data-filter="platforms" title="Platforms">
+                                <i class="fas fa-globe"></i>
+                            </button>
+                            <div class="filter-panel-inline" id="platformsPanelInline">
+                                <div class="panel-content">
+                                    <label class="platform-option">
+                                        <input type="checkbox" id="twitter" checked>
+                                        <span class="platform-icon"><i class="fab fa-twitter"></i></span>
+                                        <span>X (Twitter)</span>
+                                    </label>
+                                    <label class="platform-option">
+                                        <input type="checkbox" id="linkedin" checked>
+                                        <span class="platform-icon"><i class="fab fa-linkedin"></i></span>
+                                        <span>LinkedIn</span>
+                                    </label>
+                                    <label class="platform-option">
+                                        <input type="checkbox" id="reddit" checked>
+                                        <span class="platform-icon"><i class="fab fa-reddit"></i></span>
+                                        <span>Reddit</span>
+                                    </label>
+                                    <label class="platform-option">
+                                        <input type="checkbox" id="quora" checked>
+                                        <span class="platform-icon"><i class="fas fa-question-circle"></i></span>
+                                        <span>Quora</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <button class="filter-icon" data-filter="ai-model" title="AI Model">
+                                <i class="fas fa-robot"></i>
+                            </button>
+                            <div class="filter-panel-inline" id="aiModelPanelInline">
+                                <div class="panel-content">
+                                    <div class="ai-model-options">
+                                        <label class="ai-model-option">
+                                            <input type="radio" name="aiModel" value="gpt-4" checked>
+                                            <span class="model-name">GPT-4</span>
+                                            <span class="model-desc">Most Advanced</span>
+                                        </label>
+                                        <label class="ai-model-option">
+                                            <input type="radio" name="aiModel" value="gpt-3.5-turbo">
+                                            <span class="model-name">GPT-3.5 Turbo</span>
+                                            <span class="model-desc">Fast</span>
+                                        </label>
+                                        <label class="ai-model-option">
+                                            <input type="radio" name="aiModel" value="claude-3">
+                                            <span class="model-name">Claude 3</span>
+                                            <span class="model-desc">Anthropic</span>
+                                        </label>
+                                        <label class="ai-model-option">
+                                            <input type="radio" name="aiModel" value="gemini-pro">
+                                            <span class="model-name">Gemini Pro</span>
+                                            <span class="model-desc">Google</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <button class="filter-icon" data-filter="time" title="Time Range">
+                                <i class="fas fa-clock"></i>
+                            </button>
+                            <div class="filter-panel-inline" id="timePanelInline">
+                                <div class="panel-content">
+                                    <div class="time-scroller">
+                                        <div class="time-value-scroll">
+                                            <label>Time Value:</label>
+                                            <input type="range" id="timeValueSlider" min="1" max="12" value="7" class="time-slider">
+                                            <span id="timeValueDisplay">7</span>
+                                        </div>
+                                        <div class="time-unit-scroll">
+                                            <label>Time Unit:</label>
+                                            <input type="range" id="timeUnitSlider" min="0" max="2" value="0" class="time-slider">
+                                            <span id="timeUnitDisplay">days</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <button class="filter-icon" data-filter="keywords" title="Keywords">
+                                <i class="fas fa-tags"></i>
+                            </button>
+                            <div class="filter-panel-inline" id="keywordsPanelInline">
+                                <div class="panel-content">
+                                    <input type="text" id="keywords" placeholder="Enter specific keywords" class="keyword-input">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -84,6 +177,27 @@
             </div>
         </div>
     </main>
+
+    <!-- Right Sidebar -->
+    <aside class="right-sidebar">
+        <div class="right-sidebar-content">
+            <!-- Language Section -->
+            <div class="language-section">
+                <button class="language-btn" id="languageBtn">
+                    <i class="fas fa-globe"></i>
+                    <span>English</span>
+                </button>
+            </div>
+            
+            <!-- Learn More Section -->
+            <div class="learn-more-section">
+                <button class="learn-more-btn" id="learnMoreBtn">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Learn More</span>
+                </button>
+            </div>
+        </div>
+    </aside>
 
     <!-- Filter Panels -->
     <div class="filter-panel" id="platformsPanel">
@@ -200,6 +314,130 @@
                         </ul>
                         <button class="upgrade-plan-btn">Upgrade to Enterprise</button>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Install Modal -->
+    <div class="install-modal" id="installModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Install Scoop</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="install-options">
+                    <div class="install-option">
+                        <div class="install-icon">
+                            <i class="fab fa-apple"></i>
+                        </div>
+                        <h4>iOS App</h4>
+                        <p>Download from App Store</p>
+                        <button class="install-app-btn" disabled>Coming Soon</button>
+                    </div>
+                    <div class="install-option">
+                        <div class="install-icon">
+                            <i class="fab fa-android"></i>
+                        </div>
+                        <h4>Android App</h4>
+                        <p>Download from Google Play</p>
+                        <button class="install-app-btn" disabled>Coming Soon</button>
+                    </div>
+                    <div class="install-option">
+                        <div class="install-icon">
+                            <i class="fab fa-windows"></i>
+                        </div>
+                        <h4>Windows App</h4>
+                        <p>Download for Windows</p>
+                        <button class="install-app-btn" disabled>Coming Soon</button>
+                    </div>
+                    <div class="install-option">
+                        <div class="install-icon">
+                            <i class="fas fa-desktop"></i>
+                        </div>
+                        <h4>Desktop App</h4>
+                        <p>Cross-platform desktop</p>
+                        <button class="install-app-btn" disabled>Coming Soon</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Language Modal -->
+    <div class="language-modal" id="languageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Select Language</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="language-options">
+                    <label class="language-option">
+                        <input type="radio" name="language" value="en" checked>
+                        <span class="language-name">English</span>
+                        <span class="language-flag">🇺🇸</span>
+                    </label>
+                    <label class="language-option">
+                        <input type="radio" name="language" value="es">
+                        <span class="language-name">Español</span>
+                        <span class="language-flag">🇪🇸</span>
+                    </label>
+                    <label class="language-option">
+                        <input type="radio" name="language" value="fr">
+                        <span class="language-name">Français</span>
+                        <span class="language-flag">🇫🇷</span>
+                    </label>
+                    <label class="language-option">
+                        <input type="radio" name="language" value="de">
+                        <span class="language-name">Deutsch</span>
+                        <span class="language-flag">🇩🇪</span>
+                    </label>
+                    <label class="language-option">
+                        <input type="radio" name="language" value="zh">
+                        <span class="language-name">中文</span>
+                        <span class="language-flag">🇨🇳</span>
+                    </label>
+                    <label class="language-option">
+                        <input type="radio" name="language" value="ja">
+                        <span class="language-name">日本語</span>
+                        <span class="language-flag">🇯🇵</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Learn More Modal -->
+    <div class="learn-more-modal" id="learnMoreModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>About Scoop</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="learn-more-content">
+                    <h3>What is Scoop?</h3>
+                    <p>Scoop is an intelligent social media aggregation platform that helps you gather and analyze information from multiple social media platforms using AI-powered analysis.</p>
+                    
+                    <h3>Features</h3>
+                    <ul>
+                        <li>Search across X (Twitter), LinkedIn, Reddit, and Quora</li>
+                        <li>AI-powered analysis with multiple models</li>
+                        <li>Time-based filtering and keyword focus</li>
+                        <li>Voice input and dictation support</li>
+                        <li>Real-time intelligence reports</li>
+                    </ul>
+                    
+                    <h3>How to Use</h3>
+                    <ol>
+                        <li>Enter your query in the search box</li>
+                        <li>Select platforms using the globe icon</li>
+                        <li>Choose your preferred AI model</li>
+                        <li>Set time range and keywords if needed</li>
+                        <li>Click search or use voice input</li>
+                    </ol>
                 </div>
             </div>
         </div>

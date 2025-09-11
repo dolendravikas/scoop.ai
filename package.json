@@ -1,0 +1,19 @@
+{
+  "name": "scoop-app",
+  "version": "1.0.0",
+  "description": "Scoop - Social Media Intelligence Aggregation Platform",
+  "main": "index.html",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "dev": "python3 -m http.server 8000"
+  },
+  "keywords": ["social-media", "ai", "aggregation", "intelligence"],
+  "author": "Scoop Team",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoop - Social Media Intelligence</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-search"></i>
+                <h1>Scoop</h1>
+            </div>
+            <p class="tagline">Intelligent Social Media Intelligence Platform</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Query Section -->
+            <section class="query-section">
+                <div class="query-container">
+                    <h2>What would you like to know?</h2>
+                    <div class="search-box">
+                        <input type="text" id="queryInput" placeholder="e.g., Recent trends in RISC-V architecture" />
+                        <button id="searchBtn" class="search-btn">
+                            <i class="fas fa-search"></i>
+                            Scoop It
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Filters Section -->
+            <section class="filters-section">
+                <div class="filters-container">
+                    <h3>Customize Your Search</h3>
+                    
+                    <!-- Platform Filters -->
+                    <div class="filter-group">
+                        <h4>Social Media Platforms</h4>
+                        <div class="platform-filters">
+                            <label class="platform-option">
+                                <input type="checkbox" id="twitter" checked>
+                                <span class="platform-icon"><i class="fab fa-twitter"></i></span>
+                                <span>X (Twitter)</span>
+                            </label>
+                            <label class="platform-option">
+                                <input type="checkbox" id="linkedin" checked>
+                                <span class="platform-icon"><i class="fab fa-linkedin"></i></span>
+                                <span>LinkedIn</span>
+                            </label>
+                            <label class="platform-option">
+                                <input type="checkbox" id="reddit" checked>
+                                <span class="platform-icon"><i class="fab fa-reddit"></i></span>
+                                <span>Reddit</span>
+                            </label>
+                            <label class="platform-option">
+                                <input type="checkbox" id="quora" checked>
+                                <span class="platform-icon"><i class="fas fa-question-circle"></i></span>
+                                <span>Quora</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- AI Model Selection -->
+                    <div class="filter-group">
+                        <h4>AI Analysis Model</h4>
+                        <select id="aiModel" class="model-select">
+                            <option value="gpt-4">GPT-4 (Most Advanced)</option>
+                            <option value="gpt-3.5-turbo">GPT-3.5 Turbo (Fast)</option>
+                            <option value="claude-3">Claude 3 (Anthropic)</option>
+                            <option value="gemini-pro">Gemini Pro (Google)</option>
+                        </select>
+                    </div>
+
+                    <!-- Time Filter -->
+                    <div class="filter-group">
+                        <h4>Time Range</h4>
+                        <div class="time-filters">
+                            <select id="timeValue" class="time-value">
+                                <option value="1">1</option>
+                                <option value="3">3</option>
+                                <option value="7">7</option>
+                                <option value="14">14</option>
+                                <option value="30">30</option>
+                            </select>
+                            <select id="timeUnit" class="time-unit">
+                                <option value="days">Days</option>
+                                <option value="weeks">Weeks</option>
+                                <option value="months">Months</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Keyword Filter -->
+                    <div class="filter-group">
+                        <h4>Additional Keywords (Optional)</h4>
+                        <input type="text" id="keywords" placeholder="Enter specific keywords to focus on" class="keyword-input">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-container">
+                    <h3>Intelligence Report</h3>
+                    <div class="loading" id="loadingIndicator">
+                        <div class="spinner"></div>
+                        <p>Gathering intelligence from selected platforms...</p>
+                    </div>
+                    <div class="results-content" id="resultsContent">
+                        <!-- Results will be populated here -->
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 Scoop. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

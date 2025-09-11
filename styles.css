@@ -28,7 +28,7 @@ body {
 }
 
 .sidebar-content {
-    padding: 24px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -136,7 +136,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 40px;
+    padding: 20px;
 }
 
 .centered-content {
@@ -145,7 +145,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 40px;
+    gap: 24px;
 }
 
 /* Logo Section */
@@ -154,7 +154,7 @@ body {
 }
 
 .logo {
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: 600;
     color: #ffffff;
     letter-spacing: -0.02em;
@@ -169,7 +169,7 @@ body {
 .search-container {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
 }
 
 .search-box {
@@ -261,7 +261,7 @@ body {
 .filter-icons {
     display: flex;
     justify-content: center;
-    gap: 12px;
+    gap: 8px;
     flex-wrap: wrap;
 }
 
@@ -270,18 +270,18 @@ body {
 }
 
 .filter-icon {
-    width: 44px;
-    height: 44px;
+    width: 36px;
+    height: 36px;
     background: #1a1a1a;
     border: 1px solid #2a2a2a;
-    border-radius: 12px;
+    border-radius: 8px;
     color: #8e8ea0;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.2s ease;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .filter-icon:hover {
@@ -304,13 +304,13 @@ body {
     transform: translateX(-50%);
     background: #1a1a1a;
     border: 1px solid #2a2a2a;
-    border-radius: 12px;
-    padding: 16px;
-    margin-top: 8px;
-    min-width: 200px;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 6px;
+    min-width: 180px;
     z-index: 1000;
     display: none;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .filter-panel-inline.show {
@@ -333,17 +333,17 @@ body {
 .ai-model-options {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
 .ai-model-option {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px;
+    gap: 8px;
+    padding: 8px 10px;
     background: #2a2a2a;
     border: 1px solid #3a3a3a;
-    border-radius: 8px;
+    border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -370,10 +370,11 @@ body {
     font-weight: 500;
     color: #ffffff;
     transition: color 0.2s ease;
+    font-size: 13px;
 }
 
 .model-desc {
-    font-size: 12px;
+    font-size: 11px;
     color: #8e8ea0;
     margin-left: auto;
 }
@@ -382,17 +383,17 @@ body {
 .time-scroller {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
 }
 
 .time-value-scroll, .time-unit-scroll {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
 .time-value-scroll label, .time-unit-scroll label {
-    font-size: 12px;
+    font-size: 11px;
     color: #8e8ea0;
     font-weight: 500;
 }
@@ -437,14 +438,14 @@ body {
 }
 
 #timeValueDisplay, #timeUnitDisplay {
-    font-size: 14px;
+    font-size: 12px;
     color: #10a37f;
     font-weight: 500;
     text-align: center;
-    padding: 4px 8px;
+    padding: 3px 6px;
     background: #1a3a2a;
-    border-radius: 6px;
-    min-width: 40px;
+    border-radius: 4px;
+    min-width: 35px;
 }
 
 /* Filter Panels */
@@ -519,14 +520,14 @@ body {
 .platform-option {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 12px 16px;
+    gap: 8px;
+    padding: 8px 12px;
     background: #2a2a2a;
     border: 1px solid #3a3a3a;
-    border-radius: 12px;
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
 }
 
 .platform-option:hover {
@@ -548,7 +549,7 @@ body {
 }
 
 .platform-icon {
-    font-size: 18px;
+    font-size: 16px;
     color: #8e8ea0;
     transition: color 0.2s ease;
 }
@@ -556,17 +557,18 @@ body {
 .platform-option span:last-child {
     font-weight: 500;
     color: #ffffff;
+    font-size: 13px;
 }
 
 /* Model Select */
 .model-select {
     width: 100%;
-    padding: 16px;
+    padding: 12px;
     background: #2a2a2a;
     border: 1px solid #3a3a3a;
-    border-radius: 12px;
+    border-radius: 8px;
     color: #ffffff;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
     transition: border-color 0.2s ease;
 }
@@ -584,16 +586,16 @@ body {
 /* Time Filters */
 .time-filters {
     display: flex;
-    gap: 12px;
+    gap: 8px;
 }
 
 .time-value, .time-unit {
-    padding: 16px;
+    padding: 12px;
     background: #2a2a2a;
     border: 1px solid #3a3a3a;
-    border-radius: 12px;
+    border-radius: 8px;
     color: #ffffff;
-    font-size: 16px;
+    font-size: 14px;
     cursor: pointer;
     transition: border-color 0.2s ease;
 }
@@ -619,12 +621,12 @@ body {
 /* Keyword Input */
 .keyword-input {
     width: 100%;
-    padding: 16px;
+    padding: 12px;
     background: #2a2a2a;
     border: 1px solid #3a3a3a;
-    border-radius: 12px;
+    border-radius: 8px;
     color: #ffffff;
-    font-size: 16px;
+    font-size: 14px;
     outline: none;
     transition: border-color 0.2s ease;
 }
@@ -1029,12 +1031,12 @@ body {
 }
 
 .right-sidebar-content {
-    padding: 24px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     height: 100%;
     justify-content: flex-end;
-    gap: 16px;
+    gap: 12px;
 }
 
 /* Language Section */
@@ -1194,17 +1196,17 @@ body {
 .language-options {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
 }
 
 .language-option {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 16px;
+    gap: 10px;
+    padding: 12px;
     background: #2a2a2a;
     border: 1px solid #3a3a3a;
-    border-radius: 12px;
+    border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -1231,10 +1233,11 @@ body {
     font-weight: 500;
     color: #ffffff;
     transition: color 0.2s ease;
+    font-size: 14px;
 }
 
 .language-flag {
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin-left: auto;
 }
 

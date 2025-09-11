@@ -1,13 +1,22 @@
 // Scoop Application JavaScript - Enhanced Version
 class ScoopApp {
     constructor() {
-        this.initializeApp();
-        this.setupEventListeners();
         this.currentFilterPanel = null;
         this.isRecording = false;
         this.recognition = null;
         this.timeUnits = ['days', 'weeks', 'months', 'years'];
         this.timeUnitLabels = ['day', 'week', 'month', 'year'];
+        
+        // Wait for DOM to be ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                this.initializeApp();
+                this.setupEventListeners();
+            });
+        } else {
+            this.initializeApp();
+            this.setupEventListeners();
+        }
     }
 
     initializeApp() {
@@ -101,27 +110,46 @@ class ScoopApp {
     }
 
     setupEventListeners() {
+        console.log('Setting up event listeners...');
+        
         // Search functionality
         const searchBtn = document.getElementById('searchBtn');
         const queryInput = document.getElementById('queryInput');
         const voiceBtn = document.getElementById('voiceBtn');
 
-        searchBtn.addEventListener('click', () => this.performSearch());
-        queryInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                this.performSearch();
-            }
-        });
+        if (searchBtn) {
+            searchBtn.addEventListener('click', () => this.performSearch());
+        }
+        
+        if (queryInput) {
+            queryInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    this.performSearch();
+                }
+            });
+            
+            // Prevent space from triggering voice input when typing
+            queryInput.addEventListener('keydown', (e) => {
+                if (e.key === ' ') {
+                    // Allow normal space input in text field
+                    return;
+                }
+            });
+        }
 
         // Voice input
-        voiceBtn.addEventListener('click', () => this.toggleVoiceInput());
+        if (voiceBtn) {
+            voiceBtn.addEventListener('click', () => this.toggleVoiceInput());
+        }
 
         // Filter icons - inline panels
         const filterIcons = document.querySelectorAll('.filter-icon');
+        console.log('Found filter icons:', filterIcons.length);
         filterIcons.forEach(icon => {
             icon.addEventListener('click', (e) => {
                 e.stopPropagation();
                 const filter = e.currentTarget.dataset.filter;
+                console.log('Filter icon clicked:', filter);
                 this.toggleInlineFilterPanel(filter);
             });
         });
@@ -161,10 +189,18 @@ class ScoopApp {
         const languageBtn = document.getElementById('languageBtn');
         const learnMoreBtn = document.getElementById('learnMoreBtn');
         
-        upgradeBtn.addEventListener('click', () => this.openModal('upgrade'));
-        installBtn.addEventListener('click', () => this.openModal('install'));
-        languageBtn.addEventListener('click', () => this.openModal('language'));
-        learnMoreBtn.addEventListener('click', () => this.openModal('learnMore'));
+        if (upgradeBtn) {
+            upgradeBtn.addEventListener('click', () => this.openModal('upgrade'));
+        }
+        if (installBtn) {
+            installBtn.addEventListener('click', () => this.openModal('install'));
+        }
+        if (languageBtn) {
+            languageBtn.addEventListener('click', () => this.openModal('language'));
+        }
+        if (learnMoreBtn) {
+            learnMoreBtn.addEventListener('click', () => this.openModal('learnMore'));
+        }
 
         // Close modals
         const closeButtons = document.querySelectorAll('.close-modal');
@@ -216,6 +252,8 @@ class ScoopApp {
     }
 
     toggleInlineFilterPanel(filterType) {
+        console.log('Toggling filter panel:', filterType);
+        
         // Close current panel if open
         if (this.currentFilterPanel && this.currentFilterPanel !== filterType) {
             this.closeAllInlinePanels();
@@ -223,6 +261,8 @@ class ScoopApp {
 
         // Toggle the selected panel
         const panel = document.getElementById(`${filterType}PanelInline`);
+        console.log('Found panel:', panel);
+        
         if (panel) {
             if (panel.classList.contains('show')) {
                 this.closeAllInlinePanels();
@@ -236,6 +276,8 @@ class ScoopApp {
                     filterIcon.classList.add('active');
                 }
             }
+        } else {
+            console.error('Panel not found:', `${filterType}PanelInline`);
         }
     }
 
@@ -255,11 +297,15 @@ class ScoopApp {
     }
 
     openModal(modalType) {
+        console.log('Opening modal:', modalType);
         this.closeAllModals();
         const modal = document.getElementById(`${modalType}Modal`);
+        console.log('Found modal:', modal);
         if (modal) {
             modal.classList.add('show');
             document.body.style.overflow = 'hidden';
+        } else {
+            console.error('Modal not found:', `${modalType}Modal`);
         }
     }
 
@@ -569,8 +615,8 @@ document.addEventListener('keydown', (e) => {
         document.getElementById('queryInput').focus();
     }
     
-    // Space to toggle voice input (when search is focused)
-    if (e.key === ' ' && document.activeElement.id === 'queryInput') {
+    // Space to toggle voice input (only when not in input field)
+    if (e.key === ' ' && document.activeElement.id !== 'queryInput') {
         e.preventDefault();
         if (window.scoopApp) {
             window.scoopApp.toggleVoiceInput();

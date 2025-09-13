@@ -164,6 +164,8 @@ function setupEventListeners() {
             e.stopPropagation();
             const filter = this.dataset.filter;
             console.log('Filter icon clicked:', filter);
+            console.log('Icon element:', this);
+            console.log('Dataset:', this.dataset);
             toggleInlineFilterPanel(filter);
         });
     });
@@ -177,8 +179,10 @@ function setupEventListeners() {
 
     // AI Model selection
     const aiModelOptions = document.querySelectorAll('input[name="aiModel"]');
+    console.log('Found AI model options:', aiModelOptions.length);
     aiModelOptions.forEach(function(option) {
         option.addEventListener('change', function() {
+            console.log('AI model changed to:', this.value);
             closeAllInlinePanels();
         });
     });
@@ -286,8 +290,13 @@ function toggleInlineFilterPanel(filterType) {
     }
 
     // Toggle the selected panel
-    const panel = document.getElementById(filterType + 'PanelInline');
-    console.log('Found panel:', !!panel);
+    let panelId = filterType + 'PanelInline';
+    // Fix for ai-model which has a hyphen
+    if (filterType === 'ai-model') {
+        panelId = 'aiModelPanelInline';
+    }
+    const panel = document.getElementById(panelId);
+    console.log('Looking for panel:', panelId, 'Found:', !!panel);
     
     if (panel) {
         if (panel.classList.contains('show')) {

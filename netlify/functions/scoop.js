@@ -82,6 +82,15 @@ async function getLinkedInData(query) {
 // AI Processing
 async function processWithGemini(data, query) {
     try {
+        // Debug: Check if API key is available
+        const apiKey = process.env.GOOGLE_API_KEY;
+        console.log('Google API Key available:', apiKey ? 'Yes' : 'No');
+        console.log('API Key length:', apiKey ? apiKey.length : 0);
+        
+        if (!apiKey) {
+            return 'Error: Google API key not found in environment variables';
+        }
+        
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         const prompt = `Analyze the following social media data and provide insights about "${query}":\n\n${JSON.stringify(data, null, 2)}`;
         
@@ -124,6 +133,12 @@ exports.handler = async (event, context) => {
         const { query, platforms, aiModel, timeRange, keywords } = JSON.parse(event.body);
 
         console.log('Processing request:', { query, platforms, aiModel, timeRange, keywords });
+        
+        // Debug: Check environment variables
+        console.log('Environment variables available:');
+        console.log('GOOGLE_API_KEY:', process.env.GOOGLE_API_KEY ? 'Set' : 'Not set');
+        console.log('REDDIT_CLIENT_ID:', process.env.REDDIT_CLIENT_ID ? 'Set' : 'Not set');
+        console.log('REDDIT_CLIENT_SECRET:', process.env.REDDIT_CLIENT_SECRET ? 'Set' : 'Not set');
 
         // Collect data from selected platforms
         let allData = [];

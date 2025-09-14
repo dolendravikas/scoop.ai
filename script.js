@@ -390,7 +390,7 @@ function changeLanguage(langCode) {
     }
 }
 
-function performSearch() {
+async function performSearch() {
     const queryInput = document.getElementById('queryInput');
     const query = queryInput ? queryInput.value.trim() : '';
     
@@ -418,11 +418,42 @@ function performSearch() {
         window.resultsSection.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // Simulate API call
-    setTimeout(function() {
+    try {
+        // Call the backend API
+        const response = await fetch('http://localhost:3001/api/scoop', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                query: query,
+                platforms: filters.platforms,
+                aiModel: filters.aiModel,
+                timeRange: filters.timeRange,
+                keywords: filters.keywords
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            displayResults(data);
+        } else {
+            throw new Error(data.error || 'Unknown error occurred');
+        }
+        
+    } catch (error) {
+        console.error('API Error:', error);
+        // Fallback to mock data if API fails
+        console.log('Falling back to mock results...');
         const results = generateMockResults(query, filters);
+        results.error = `API Error: ${error.message}. Showing mock data.`;
         displayResults(results);
-    }, 2000);
+    }
 }
 
 function getFilterValues() {
@@ -562,29 +593,90 @@ function displayResults(data) {
         window.resultsContent.style.display = 'block';
         window.resultsContent.classList.add('show');
 
-        const report = data.intelligenceReport;
-        const platformResults = data.platformResults;
+        let html = '';
 
-        let html = '<div class="intelligence-report">' +
-            '<h4>AI Analysis Summary (' + data.filters.aiModel.toUpperCase() + ')</h4>' +
-            '<p><strong>Query:</strong> ' + data.query + '</p>' +
-            '<p><strong>Analysis Period:</strong> Past ' + data.filters.timeValue + ' ' + data.filters.timeUnit + '</p>' +
-            '<p><strong>Platforms Analyzed:</strong> ' + data.filters.platforms.join(', ').toUpperCase() + '</p>' +
-            '<h5>Key Findings:</h5>' +
-            '<ul>' + report.keyFindings.map(function(finding) { return '<li>' + finding + '</li>'; }).join('') + '</ul>' +
-            '<h5>Recommendations:</h5>' +
-            '<ul>' + report.recommendations.map(function(rec) { return '<li>' + rec + '</li>'; }).join('') + '</ul>' +
-            '</div>' +
-            '<div class="platform-results">';
+        // Check if this is real API data or mock data
+        if (data.analysis && data.rawData) {
+            // Real API data format
+            html = '<div class="intelligence-report">' +
+                '<h4>AI Analysis Summary (' + data.aiModel.toUpperCase() + ')</h4>' +
+                '<p><strong>Query:</strong> ' + data.query + '</p>' +
+                '<p><strong>Data Sources:</strong> ' + data.platforms.join(', ').toUpperCase() + '</p>' +
+                '<p><strong>Posts Analyzed:</strong> ' + data.dataCount + '</p>' +
+                (data.error ? '<div class="error-notice"><strong>Note:</strong> ' + data.error + '</div>' : '') +
+                '<h5>AI Analysis:</h5>' +
+                '<div class="analysis-content">' + data.analysis + '</div>' +
+                '</div>' +
+                '<div class="platform-results">' +
+                '<h5>Raw Data Sources:</h5>';
 
-        Object.values(platformResults).forEach(function(platform) {
-            html += '<div class="platform-result">' +
-                '<h5><i class="' + platform.icon + '"></i>' + platform.name + '</h5>' +
-                '<ul>' + platform.posts.map(function(post) { return '<li>' + post + '</li>'; }).join('') + '</ul>' +
-                '</div>';
-        });
+            // Group data by platform
+            const platformData = {};
+            data.rawData.forEach(item => {
+                if (!platformData[item.platform]) {
+                    platformData[item.platform] = [];
+                }
+                platformData[item.platform].push(item);
+            });
 
-        html += '</div>';
+            Object.entries(platformData).forEach(([platform, posts]) => {
+                const platformIcons = {
+                    'twitter': 'fab fa-twitter',
+                    'reddit': 'fab fa-reddit',
+                    'linkedin': 'fab fa-linkedin',
+                    'quora': 'fas fa-question-circle'
+                };
+                
+                html += '<div class="platform-result">' +
+                    '<h6><i class="' + (platformIcons[platform] || 'fas fa-globe') + '"></i> ' + platform.toUpperCase() + ' (' + posts.length + ' posts)</h6>' +
+                    '<div class="posts-container">';
+                
+                posts.slice(0, 5).forEach(post => {
+                    html += '<div class="post-item">' +
+                        '<div class="post-content">' + post.content.substring(0, 200) + (post.content.length > 200 ? '...' : '') + '</div>' +
+                        '<div class="post-meta">' +
+                            '<span class="post-author">' + (post.author || 'Unknown') + '</span>' +
+                            '<span class="post-date">' + new Date(post.created_at).toLocaleDateString() + '</span>' +
+                            (post.url ? '<a href="' + post.url + '" target="_blank" class="post-link">View Original</a>' : '') +
+                        '</div>' +
+                        '</div>';
+                });
+                
+                if (posts.length > 5) {
+                    html += '<div class="more-posts">... and ' + (posts.length - 5) + ' more posts</div>';
+                }
+                
+                html += '</div></div>';
+            });
+
+            html += '</div>';
+        } else {
+            // Mock data format (fallback)
+            const report = data.intelligenceReport;
+            const platformResults = data.platformResults;
+
+            html = '<div class="intelligence-report">' +
+                '<h4>AI Analysis Summary (' + data.filters.aiModel.toUpperCase() + ')</h4>' +
+                '<p><strong>Query:</strong> ' + data.query + '</p>' +
+                '<p><strong>Analysis Period:</strong> Past ' + data.filters.timeValue + ' ' + data.filters.timeUnit + '</p>' +
+                '<p><strong>Platforms Analyzed:</strong> ' + data.filters.platforms.join(', ').toUpperCase() + '</p>' +
+                '<h5>Key Findings:</h5>' +
+                '<ul>' + report.keyFindings.map(function(finding) { return '<li>' + finding + '</li>'; }).join('') + '</ul>' +
+                '<h5>Recommendations:</h5>' +
+                '<ul>' + report.recommendations.map(function(rec) { return '<li>' + rec + '</li>'; }).join('') + '</ul>' +
+                '</div>' +
+                '<div class="platform-results">';
+
+            Object.values(platformResults).forEach(function(platform) {
+                html += '<div class="platform-result">' +
+                    '<h5><i class="' + platform.icon + '"></i>' + platform.name + '</h5>' +
+                    '<ul>' + platform.posts.map(function(post) { return '<li>' + post + '</li>'; }).join('') + '</ul>' +
+                    '</div>';
+            });
+
+            html += '</div>';
+        }
+
         window.resultsContent.innerHTML = html;
     }
 }

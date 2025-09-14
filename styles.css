@@ -312,7 +312,7 @@ body {
     display: none;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
     /* Debug: Add visible border when debugging */
-    border: 2px solid #ff0000;
+    /* border: 2px solid #ff0000; */
 }
 
 .filter-panel-inline.show {
@@ -329,6 +329,82 @@ body {
         opacity: 1;
         transform: translateX(-50%) translateY(0);
     }
+}
+
+/* API Data Display Styles */
+.analysis-content {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 12px 0;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.error-notice {
+    background: #2d1b1b;
+    border: 1px solid #5c2a2a;
+    border-radius: 6px;
+    padding: 12px;
+    margin: 12px 0;
+    color: #ff6b6b;
+}
+
+.posts-container {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-top: 8px;
+}
+
+.post-item {
+    background: #1a1a1a;
+    border: 1px solid #2a2a2a;
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 8px;
+}
+
+.post-content {
+    color: #ffffff;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.post-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #8e8ea0;
+}
+
+.post-author {
+    font-weight: 500;
+}
+
+.post-date {
+    color: #6e6e6e;
+}
+
+.post-link {
+    color: #10a37f;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.post-link:hover {
+    text-decoration: underline;
+}
+
+.more-posts {
+    text-align: center;
+    color: #8e8ea0;
+    font-style: italic;
+    padding: 8px;
+    background: #1a1a1a;
+    border-radius: 4px;
+    margin-top: 8px;
 }
 
 /* AI Model Options */

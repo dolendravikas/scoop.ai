@@ -1,0 +1,10 @@
+{
+  "name": "scoop-netlify-functions",
+  "version": "1.0.0",
+  "description": "Scoop AI Netlify Functions",
+  "main": "scoop.js",
+  "dependencies": {
+    "@google/generative-ai": "^0.2.1",
+    "axios": "^1.6.0"
+  }
+}

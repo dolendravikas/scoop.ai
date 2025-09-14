@@ -418,42 +418,46 @@ async function performSearch() {
         window.resultsSection.scrollIntoView({ behavior: 'smooth' });
     }
 
-    try {
-        // Call the backend API
-        const response = await fetch('http://localhost:3001/api/scoop', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                query: query,
-                platforms: filters.platforms,
-                aiModel: filters.aiModel,
-                timeRange: filters.timeRange,
-                keywords: filters.keywords
-            })
-        });
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        
-        if (data.success) {
-            displayResults(data);
-        } else {
-            throw new Error(data.error || 'Unknown error occurred');
-        }
-        
-    } catch (error) {
-        console.error('API Error:', error);
-        // Fallback to mock data if API fails
-        console.log('Falling back to mock results...');
-        const results = generateMockResults(query, filters);
-        results.error = `API Error: ${error.message}. Showing mock data.`;
-        displayResults(results);
-    }
+                try {
+                    // Check if we're on localhost (development) or production
+                    const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+                    const apiUrl = isLocalhost ? 'http://localhost:3001/api/scoop' : '/.netlify/functions/scoop';
+                    
+                    // Call the backend API
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            query: query,
+                            platforms: filters.platforms,
+                            aiModel: filters.aiModel,
+                            timeRange: filters.timeRange,
+                            keywords: filters.keywords
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        displayResults(data);
+                    } else {
+                        throw new Error(data.error || 'Unknown error occurred');
+                    }
+                    
+                } catch (error) {
+                    console.error('API Error:', error);
+                    // Fallback to mock data if API fails
+                    console.log('Falling back to mock results...');
+                    const results = generateMockResults(query, filters);
+                    results.error = `API Error: ${error.message}. Showing mock data.`;
+                    displayResults(results);
+                }
 }
 
 function getFilterValues() {

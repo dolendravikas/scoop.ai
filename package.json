@@ -7,10 +7,16 @@
     "start": "python3 -m http.server 8000",
     "dev": "python3 -m http.server 8000"
   },
-  "keywords": ["social-media", "ai", "aggregation", "intelligence"],
+  "keywords": [
+    "social-media",
+    "ai",
+    "aggregation",
+    "intelligence"
+  ],
   "author": "Scoop Team",
   "license": "MIT",
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
     "axios": "^1.6.0"
   },
   "devDependencies": {

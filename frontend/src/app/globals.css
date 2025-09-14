@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+/* Custom styles for Scoop UI */
+.search-box {
+  @apply w-full max-w-2xl mx-auto relative;
+}
+
+.search-input {
+  @apply w-full px-6 py-4 text-lg bg-gray-800 border border-gray-700 rounded-full 
+         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+         placeholder-gray-400 text-white;
+}
+
+.filter-icon {
+  @apply w-10 h-10 flex items-center justify-center rounded-full 
+         bg-gray-700 hover:bg-gray-600 cursor-pointer transition-colors
+         border border-gray-600;
+}
+
+.filter-panel {
+  @apply absolute top-full left-0 mt-2 bg-gray-800 border border-gray-700 
+         rounded-lg shadow-lg p-4 z-10 min-w-64;
+}
+
+.sidebar {
+  @apply w-64 bg-gray-800 border-r border-gray-700 p-6 min-h-screen;
+}
+
+.results-section {
+  @apply mt-8 space-y-6;
+}
+
+.post-item {
+  @apply bg-gray-800 border border-gray-700 rounded-lg p-4 hover:bg-gray-750 transition-colors;
+}

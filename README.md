@@ -1,145 +1,161 @@
-# Scoop - Social Media Intelligence Platform
+# Scoop - AI-Powered Social Media Intelligence Platform
 
-Scoop is an intelligent social media aggregation platform that helps users gather and analyze information from multiple social media platforms using AI-powered analysis.
+Scoop is a comprehensive platform that aggregates and analyzes information from social media platforms using AI to provide intelligent insights and trends.
 
-## Features
+## 🏗️ Project Structure
 
-### 🔍 Intelligent Search
-- Natural language query processing
-- Real-time search across multiple platforms
-- Context-aware result compilation
-
-### 📱 Platform Integration
-- **X (Twitter)** - Real-time tweets and discussions
-- **LinkedIn** - Professional insights and industry news
-- **Reddit** - Community discussions and technical threads
-- **Quora** - Expert Q&A and detailed explanations
-
-### 🤖 AI Analysis
-- Multiple AI model support:
-  - GPT-4 (Most Advanced)
-  - GPT-3.5 Turbo (Fast)
-  - Claude 3 (Anthropic)
-  - Gemini Pro (Google)
-- Intelligent content summarization
-- Sentiment analysis
-- Trend identification
-
-### ⚙️ Advanced Filtering
-- **Platform Selection** - Choose which social media platforms to search
-- **Time Range** - Filter by days, weeks, or months
-- **Keyword Focus** - Add specific keywords to refine results
-- **AI Model Selection** - Choose your preferred AI analysis model
-
-## Getting Started
-
-### Prerequisites
-- Python 3.x (for local development server)
-- Modern web browser
-
-### Installation
-
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd scoop
+```
+scoop/
+├── frontend/          # Next.js + Vite + TypeScript
+├── backend/           # NestJS + TypeScript
+├── docs/             # Documentation
+├── scripts/          # Deployment scripts
+├── .github/          # GitHub workflows
+└── docker-compose.yml # Local development
 ```
 
-2. Install dependencies (optional, for future development):
-```bash
-npm install
-```
-
-3. Start the development server:
-```bash
-python3 -m http.server 8000
-```
-
-4. Open your browser and navigate to:
-```
-http://localhost:8000
-```
-
-## Usage
-
-1. **Enter Your Query**: Type what you want to know about in the search box
-2. **Select Platforms**: Choose which social media platforms to search
-3. **Choose AI Model**: Select your preferred AI analysis model
-4. **Set Time Range**: Specify how far back to search (days/weeks/months)
-5. **Add Keywords** (Optional): Include specific keywords to focus the search
-6. **Click "Scoop It"**: Let the AI analyze and compile the results
-
-## Example Queries
-
-- "Recent trends in RISC-V architecture"
-- "Best practices for React Native development"
-- "Market analysis for electric vehicles"
-- "Latest developments in quantum computing"
-- "Career advice for software engineers"
-
-## Roadmap
-
-### Phase 1: Web Application ✅
-- [x] Basic web interface
-- [x] Platform filter system
-- [x] AI model selection
-- [x] Time-based filtering
-- [x] Mock data integration
-
-### Phase 2: Mobile Applications
-- [ ] iOS app development
-- [ ] Android app development
-- [ ] React Native implementation
-- [ ] Mobile-optimized UI
-
-### Phase 3: Desktop Applications
-- [ ] Windows application
-- [ ] macOS application
-- [ ] Cross-platform desktop solution
-
-### Phase 4: Advanced Features
-- [ ] Real API integrations
-- [ ] User authentication
-- [ ] Saved searches and alerts
-- [ ] Export functionality
-- [ ] Advanced analytics dashboard
-
-## Technical Architecture
+## 🚀 Tech Stack
 
 ### Frontend
-- **HTML5** - Semantic markup
-- **CSS3** - Modern styling with gradients and animations
-- **JavaScript (ES6+)** - Interactive functionality
-- **Font Awesome** - Icons and visual elements
+- **Framework**: Next.js 14
+- **Build Tool**: Vite
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **State Management**: React Hooks
 
-### Planned Backend
-- **Node.js/Express** - API server
-- **MongoDB/PostgreSQL** - Data storage
-- **Redis** - Caching layer
-- **Docker** - Containerization
+### Backend
+- **Framework**: NestJS
+- **Language**: TypeScript
+- **Database**: (To be added)
+- **AI Integration**: Google Gemini, OpenAI, Anthropic
+- **Social Media APIs**: Reddit, Twitter, LinkedIn, Quora
 
-### AI Integration
-- **OpenAI API** - GPT models
-- **Anthropic API** - Claude models
-- **Google AI** - Gemini models
-- **Custom ML models** - Specialized analysis
+## 🛠️ Development Setup
 
-## Contributing
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
+- Git
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+### Frontend Development
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-## License
+### Backend Development
+```bash
+cd backend
+npm install
+npm run start:dev
+```
+
+### Environment Variables
+Copy the example environment files and configure your API keys:
+
+```bash
+# Frontend
+cp frontend/.env.example frontend/.env.local
+
+# Backend
+cp backend/.env.example backend/.env
+```
+
+## 📋 Available Scripts
+
+### Frontend
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+
+### Backend
+- `npm run start` - Start production server
+- `npm run start:dev` - Start development server with hot reload
+- `npm run build` - Build the application
+- `npm run test` - Run unit tests
+- `npm run test:e2e` - Run end-to-end tests
+
+## 🤝 Contributing
+
+### Git Workflow
+1. Create a feature branch from `main`
+2. Make your changes
+3. Write tests for new features
+4. Submit a pull request
+
+### Branch Naming
+- `feature/description` - New features
+- `bugfix/description` - Bug fixes
+- `hotfix/description` - Critical fixes
+- `docs/description` - Documentation updates
+
+### Commit Messages
+Use conventional commits:
+- `feat:` - New features
+- `fix:` - Bug fixes
+- `docs:` - Documentation
+- `style:` - Code style changes
+- `refactor:` - Code refactoring
+- `test:` - Adding tests
+- `chore:` - Maintenance tasks
+
+## 🚀 Deployment
+
+### Frontend (Netlify)
+- Automatic deployment from `main` branch
+- Environment variables configured in Netlify dashboard
+
+### Backend (Railway/Render)
+- Deploy from `main` branch
+- Environment variables configured in service dashboard
+
+## 📚 API Documentation
+
+### Endpoints
+- `POST /api/scoop` - Process search request
+- `GET /api/scoop/health` - Health check
+
+### Request Format
+```json
+{
+  "query": "search query",
+  "platforms": ["reddit", "twitter"],
+  "aiModel": "gemini-pro",
+  "timeRange": "week",
+  "keywords": "optional keywords"
+}
+```
+
+## 🔧 Configuration
+
+### Environment Variables
+
+#### Frontend
+- `NEXT_PUBLIC_API_URL` - Backend API URL
+
+#### Backend
+- `GOOGLE_API_KEY` - Google Gemini API key
+- `REDDIT_CLIENT_ID` - Reddit API client ID
+- `REDDIT_CLIENT_SECRET` - Reddit API client secret
+- `OPENAI_API_KEY` - OpenAI API key
+- `ANTHROPIC_API_KEY` - Anthropic API key
+- `TWITTER_BEARER_TOKEN` - Twitter API bearer token
+
+## 📄 License
 
 MIT License - see LICENSE file for details
 
-## Support
+## 👥 Team
 
-For questions, issues, or feature requests, please open an issue on GitHub.
+- **Frontend Team**: Next.js, React, TypeScript
+- **Backend Team**: NestJS, TypeScript, AI Integration
+- **DevOps Team**: Deployment, CI/CD, Infrastructure
 
----
+## 🆘 Support
 
-**Scoop** - Making social media intelligence accessible and actionable.
+For questions and support:
+- Create an issue in the GitHub repository
+- Check the documentation in `/docs`
+- Contact the development team

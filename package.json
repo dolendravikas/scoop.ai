@@ -16,8 +16,12 @@
   "author": "Scoop Team",
   "license": "MIT",
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.62.0",
     "@google/generative-ai": "^0.24.1",
-    "axios": "^1.6.0"
+    "@nestjs/axios": "^4.0.1",
+    "@nestjs/config": "^4.0.2",
+    "axios": "^1.12.2",
+    "openai": "^5.20.2"
   },
   "devDependencies": {
     "live-server": "^1.2.2"

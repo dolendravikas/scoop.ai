@@ -63,36 +63,5 @@ jobs:
     - name: E2E Test
       run: npm run test:e2e
 
-  deploy-frontend:
-    needs: [frontend-test, backend-test]
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Deploy to Netlify
-      uses: nwtgck/actions-netlify@v2.0
-      with:
-        publish-dir: './frontend/out'
-        production-branch: main
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        deploy-message: "Deploy from GitHub Actions"
-      env:
-        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-
-  deploy-backend:
-    needs: [backend-test]
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    
-    steps:
-    - uses: actions/checkout@v4
-    
-    - name: Deploy to Railway
-      uses: bervProject/railway-deploy@v1.0.3
-      with:
-        railway-token: ${{ secrets.RAILWAY_TOKEN }}
-        service: ${{ secrets.RAILWAY_SERVICE }}
-        working-directory: ./backend
+  # Deployment steps can be added here when ready
+  # For now, manual deployment is recommended

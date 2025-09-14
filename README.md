@@ -10,8 +10,7 @@ scoop/
 ├── backend/           # NestJS + TypeScript
 ├── docs/             # Documentation
 ├── scripts/          # Deployment scripts
-├── .github/          # GitHub workflows
-└── docker-compose.yml # Local development
+└── .github/          # GitHub workflows
 ```
 
 ## 🚀 Tech Stack
@@ -37,19 +36,43 @@ scoop/
 - npm or yarn
 - Git
 
-### Frontend Development
+### Quick Start (Local Development)
+
+#### Option 1: Automated Setup
 ```bash
-cd frontend
-npm install
-npm run dev
+# Install all dependencies and get setup instructions
+npm run setup
 ```
 
-### Backend Development
+#### Option 2: Manual Setup
+
+**Start Backend Server:**
 ```bash
 cd backend
 npm install
 npm run start:dev
 ```
+Backend will run on: http://localhost:3001
+
+**Start Frontend Server (in a new terminal):**
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Frontend will run on: http://localhost:3000
+
+#### Option 3: Run Both Servers Together
+```bash
+# Install all dependencies first
+npm run install:all
+
+# Start both servers simultaneously
+npm run dev
+```
+
+#### Access the Application
+Open your browser and go to: http://localhost:3000
 
 ### Environment Variables
 Copy the example environment files and configure your API keys:
@@ -64,15 +87,22 @@ cp backend/.env.example backend/.env
 
 ## 📋 Available Scripts
 
-### Frontend
-- `npm run dev` - Start development server
+### Root Level (Project-wide)
+- `npm run setup` - Automated setup with dependency installation
+- `npm run install:all` - Install dependencies for both frontend and backend
+- `npm run dev` - Start both frontend and backend servers simultaneously
+- `npm run build` - Build both frontend and backend for production
+- `npm run test` - Run tests for both frontend and backend
+
+### Frontend (cd frontend)
+- `npm run dev` - Start development server (http://localhost:3000)
 - `npm run build` - Build for production
 - `npm run start` - Start production server
 - `npm run lint` - Run ESLint
 
-### Backend
+### Backend (cd backend)
 - `npm run start` - Start production server
-- `npm run start:dev` - Start development server with hot reload
+- `npm run start:dev` - Start development server with hot reload (http://localhost:3001)
 - `npm run build` - Build the application
 - `npm run test` - Run unit tests
 - `npm run test:e2e` - Run end-to-end tests

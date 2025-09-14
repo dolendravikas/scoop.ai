@@ -1,29 +1,32 @@
 {
-  "name": "scoop-app",
+  "name": "scoop",
   "version": "1.0.0",
-  "description": "Scoop - Social Media Intelligence Aggregation Platform",
-  "main": "index.html",
+  "description": "AI-Powered Social Media Intelligence Platform",
+  "private": true,
   "scripts": {
-    "start": "python3 -m http.server 8000",
-    "dev": "python3 -m http.server 8000"
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && npm run start:dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "build": "cd backend && npm run build && cd ../frontend && npm run build",
+    "test": "cd backend && npm run test && cd ../frontend && npm run test",
+    "setup": "chmod +x scripts/dev-start.sh && ./scripts/dev-start.sh"
   },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
   "keywords": [
     "social-media",
     "ai",
+    "intelligence",
     "aggregation",
-    "intelligence"
+    "nextjs",
+    "nestjs"
   ],
   "author": "Scoop Team",
-  "license": "MIT",
-  "dependencies": {
-    "@anthropic-ai/sdk": "^0.62.0",
-    "@google/generative-ai": "^0.24.1",
-    "@nestjs/axios": "^4.0.1",
-    "@nestjs/config": "^4.0.2",
-    "axios": "^1.12.2",
-    "openai": "^5.20.2"
-  },
-  "devDependencies": {
-    "live-server": "^1.2.2"
-  }
+  "license": "MIT"
 }

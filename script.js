@@ -299,9 +299,15 @@ function toggleInlineFilterPanel(filterType) {
     console.log('Looking for panel:', panelId, 'Found:', !!panel);
     
     if (panel) {
+        console.log('Panel element:', panel);
+        console.log('Panel current classes:', panel.className);
+        console.log('Panel display style:', window.getComputedStyle(panel).display);
+        
         if (panel.classList.contains('show')) {
+            console.log('Panel is already showing, closing it');
             closeAllInlinePanels();
         } else {
+            console.log('Adding show class to panel');
             panel.classList.add('show');
             currentFilterPanel = filterType;
             
@@ -309,10 +315,21 @@ function toggleInlineFilterPanel(filterType) {
             const filterIcon = document.querySelector('[data-filter="' + filterType + '"]');
             if (filterIcon) {
                 filterIcon.classList.add('active');
+                console.log('Added active class to filter icon');
+            } else {
+                console.error('Filter icon not found for:', filterType);
             }
+            
+            // Force a reflow to ensure the panel is visible
+            panel.offsetHeight;
+            console.log('Panel classes after adding show:', panel.className);
+            console.log('Panel display style after:', window.getComputedStyle(panel).display);
         }
     } else {
-        console.error('Panel not found:', filterType + 'PanelInline');
+        console.error('Panel not found:', panelId);
+        // Let's also check what panels do exist
+        const allPanels = document.querySelectorAll('[id$="PanelInline"]');
+        console.log('All inline panels found:', Array.from(allPanels).map(p => p.id));
     }
 }
 

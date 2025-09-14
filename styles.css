@@ -311,6 +311,8 @@ body {
     z-index: 1000;
     display: none;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    /* Debug: Add visible border when debugging */
+    border: 2px solid #ff0000;
 }
 
 .filter-panel-inline.show {

@@ -1,21 +1,23 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { HttpModule } from '@nestjs/axios';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ScoopController } from './scoop/scoop.controller';
-import { ScoopService } from './scoop/scoop.service';
-import { RedditService } from './services/reddit.service';
-import { GeminiService } from './services/gemini.service';
+import { ScoopModule } from './modules/scoop/scoop.module';
+import { RedditModule } from './modules/reddit/reddit.module';
+import { GeminiModule } from './modules/gemini/gemini.module';
+import { HealthModule } from './modules/health/health.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    HttpModule,
+    ScoopModule,
+    RedditModule,
+    GeminiModule,
+    HealthModule,
   ],
-  controllers: [AppController, ScoopController],
-  providers: [AppService, ScoopService, RedditService, GeminiService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

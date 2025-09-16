@@ -6,7 +6,7 @@ import FilterPanel from "@/components/FilterPanel";
 import ResultsSection from "@/components/ResultsSection";
 import Sidebar from "@/components/Sidebar";
 import { appConfig } from "@/config/app.config";
-import { searchScoop } from "@/utils/api";
+import { searchScoop, ScoopResponse } from "@/utils/api";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -17,7 +17,7 @@ export default function Home() {
     timeRange: appConfig.defaults.timeRange,
     keywords: "",
   });
-  const [results, setResults] = useState(null);
+  const [results, setResults] = useState<ScoopResponse | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleSearch = async (query: string) => {
@@ -32,7 +32,19 @@ export default function Home() {
       setResults(data);
     } catch (error) {
       console.error("Search error:", error);
-      setResults({ error: "Search failed. Please try again." });
+      setResults({
+        success: false,
+        query,
+        platforms: filters.platforms,
+        aiModel: filters.aiModel,
+        timeRange: filters.timeRange,
+        keywords: filters.keywords,
+        dataCount: 0,
+        rawData: [],
+        analysis: "",
+        timestamp: new Date().toISOString(),
+        error: "Search failed. Please try again.",
+      });
     } finally {
       setLoading(false);
     }

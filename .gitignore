@@ -2,9 +2,10 @@
 # Frontend
 frontend/node_modules/
 frontend/dist/
-frotend/.next/
+frontend/.next/
+frontend/out/
 frontend/.env.local
-fronted/.env
+frontend/.env
 
 # Backend
 backend/node_modules/

@@ -1,5 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Enable static export for Netlify
+  output: "export",
+  trailingSlash: true,
+  images: {
+    unoptimized: true,
+  },
+
   // Environment variables that should be available on the client side
   env: {
     NEXT_PUBLIC_BACKEND_URL: process.env.NEXT_PUBLIC_BACKEND_URL,
@@ -11,22 +18,8 @@ const nextConfig = {
     NEXT_PUBLIC_MOCK_DATA_ENABLED: process.env.NEXT_PUBLIC_MOCK_DATA_ENABLED,
   },
 
-  // API rewrites for development
-  async rewrites() {
-    const isDevelopment = process.env.NODE_ENV === "development";
-    const backendUrl =
-      process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:3001";
-
-    if (isDevelopment) {
-      return [
-        {
-          source: "/api/:path*",
-          destination: `${backendUrl}/api/:path*`,
-        },
-      ];
-    }
-    return [];
-  },
+  // Note: API rewrites are disabled for static export
+  // API calls will go directly to the backend URL
 
   // Enable experimental features if needed
   experimental: {

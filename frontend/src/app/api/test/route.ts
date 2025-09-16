@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: false,
       backend: "disconnected",
-      error: error.message,
+      error: error instanceof Error ? error.message : "Unknown error",
     });
   }
 }

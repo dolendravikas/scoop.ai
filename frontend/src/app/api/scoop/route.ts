@@ -45,11 +45,11 @@ export async function POST(request: NextRequest) {
     const mockData = {
       success: true,
       query: body?.query || "test query",
-      platforms: body?.platforms || ["reddit"],
+      platforms: body?.platforms || ["reddit", "twitter"],
       aiModel: body?.aiModel || "gemini-pro",
       timeRange: body?.timeRange || "week",
       keywords: body?.keywords || "",
-      dataCount: 3,
+      dataCount: 5,
       rawData: [
         {
           platform: "reddit",
@@ -62,6 +62,19 @@ export async function POST(request: NextRequest) {
           url: "https://reddit.com/r/test/comments/mock",
         },
         {
+          platform: "twitter",
+          content:
+            "Mock Twitter post about the search query. This is sample data for testing purposes. #test #mock",
+          author: "mock_user",
+          author_name: "Mock User",
+          author_verified: false,
+          created_at: new Date().toISOString(),
+          like_count: 15,
+          retweet_count: 3,
+          reply_count: 2,
+          url: "https://twitter.com/mock_user/status/mock1",
+        },
+        {
           platform: "reddit",
           content:
             "Another mock Reddit post with relevant information about the search topic.",
@@ -70,6 +83,19 @@ export async function POST(request: NextRequest) {
           created_at: new Date().toISOString(),
           score: 25,
           url: "https://reddit.com/r/technology/comments/mock2",
+        },
+        {
+          platform: "twitter",
+          content:
+            "Another mock Twitter post with insights about the search topic. Great discussion happening here!",
+          author: "tech_expert",
+          author_name: "Tech Expert",
+          author_verified: true,
+          created_at: new Date().toISOString(),
+          like_count: 42,
+          retweet_count: 8,
+          reply_count: 5,
+          url: "https://twitter.com/tech_expert/status/mock2",
         },
         {
           platform: "reddit",
@@ -82,9 +108,9 @@ export async function POST(request: NextRequest) {
           url: "https://reddit.com/r/programming/comments/mock3",
         },
       ],
-      analysis: `Based on the search results from Reddit, here's what I found about "${
+      analysis: `Based on the search results from Reddit and Twitter, here's what I found about "${
         body?.query || "your query"
-      }":\n\n1. The topic appears to be actively discussed across multiple subreddits including r/test, r/technology, and r/programming.\n\n2. Key insights from the community:\n   - Users are showing interest in this topic with engagement scores ranging from 10-25 upvotes\n   - The discussion spans across different communities, indicating broad relevance\n   - Recent posts suggest this is a trending topic\n\n3. Community sentiment appears positive based on the engagement metrics.\n\nNote: This is mock data for demonstration purposes. The backend API is not currently available.`,
+      }":\n\n1. The topic appears to be actively discussed across multiple platforms:\n   - Reddit: r/test, r/technology, and r/programming communities\n   - Twitter: Various users including verified accounts discussing the topic\n\n2. Key insights from the community:\n   - Reddit: Users showing interest with engagement scores ranging from 10-25 upvotes\n   - Twitter: Strong engagement with likes (15-42), retweets (3-8), and replies (2-5)\n   - The discussion spans across different communities, indicating broad relevance\n   - Recent posts suggest this is a trending topic\n\n3. Platform-specific observations:\n   - Reddit provides more detailed, long-form discussions\n   - Twitter shows real-time reactions and quick insights\n   - Both platforms indicate positive community sentiment\n\nNote: This is mock data for demonstration purposes. The backend API is not currently available.`,
       error: "Backend API not available. Showing mock data for demonstration.",
     };
 

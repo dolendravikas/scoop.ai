@@ -87,9 +87,9 @@ export const getAppConfig = (): AppConfig => {
 
     defaults: {
       aiModel: process.env.NEXT_PUBLIC_DEFAULT_AI_MODEL || "gemini-1.5-flash",
-      platforms: (process.env.NEXT_PUBLIC_DEFAULT_PLATFORMS || "reddit").split(
-        ","
-      ),
+      platforms: (
+        process.env.NEXT_PUBLIC_DEFAULT_PLATFORMS || "reddit,twitter"
+      ).split(","),
       timeRange: process.env.NEXT_PUBLIC_DEFAULT_TIME_RANGE || "week",
     },
 

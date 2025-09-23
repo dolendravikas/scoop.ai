@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { RedditService } from '../reddit/reddit.service';
-import { GeminiService } from '../gemini/gemini.service';
+import { Injectable } from "@nestjs/common";
+import { RedditService } from "../reddit/reddit.service";
+import { TwitterService } from "../twitter/twitter.service";
+import { GeminiService } from "../gemini/gemini.service";
 
 export interface ScoopRequest {
   query: string;
@@ -16,34 +17,59 @@ export interface ScoopRequest {
 export class ScoopService {
   constructor(
     private readonly redditService: RedditService,
-    private readonly geminiService: GeminiService,
+    private readonly twitterService: TwitterService,
+    private readonly geminiService: GeminiService
   ) {}
 
   async processRequest(request: ScoopRequest) {
     try {
-      console.log('Processing Scoop request:', request);
+      console.log("Processing Scoop request:", request);
 
       // Collect data from selected platforms
       let allData = [];
       const platformResults = {};
 
-      if (request.platforms.includes('reddit')) {
+      if (request.platforms.includes("reddit")) {
         try {
           const redditData = await this.redditService.getData(
             request.query,
-            request.timeRange || 'week',
+            request.timeRange || "week",
             request.limit || 10,
-            request.sort || 'relevance',
+            request.sort || "relevance"
           );
           allData = allData.concat(redditData);
-          platformResults['reddit'] = {
+          platformResults["reddit"] = {
             success: true,
             count: redditData.length,
             data: redditData,
           };
         } catch (error) {
-          console.error('Reddit data collection failed:', error.message);
-          platformResults['reddit'] = {
+          console.error("Reddit data collection failed:", error.message);
+          platformResults["reddit"] = {
+            success: false,
+            error: error.message,
+            count: 0,
+            data: [],
+          };
+        }
+      }
+
+      if (request.platforms.includes("twitter")) {
+        try {
+          const twitterData = await this.twitterService.getData(
+            request.query,
+            request.limit || 10,
+            "relevancy"
+          );
+          allData = allData.concat(twitterData);
+          platformResults["twitter"] = {
+            success: true,
+            count: twitterData.length,
+            data: twitterData,
+          };
+        } catch (error) {
+          console.error("Twitter data collection failed:", error.message);
+          platformResults["twitter"] = {
             success: false,
             error: error.message,
             count: 0,
@@ -53,29 +79,28 @@ export class ScoopService {
       }
 
       // Add other platform services here
-      // if (request.platforms.includes('twitter')) { ... }
       // if (request.platforms.includes('linkedin')) { ... }
       // if (request.platforms.includes('quora')) { ... }
 
       // Process with AI
-      let analysis = '';
+      let analysis = "";
       let aiResult = { success: false, error: null as string | null };
 
       try {
-        if (request.aiModel.startsWith('gemini')) {
+        if (request.aiModel.startsWith("gemini")) {
           analysis = await this.geminiService.analyze(
             allData,
             request.query,
-            request.aiModel,
+            request.aiModel
           );
           aiResult = { success: true, error: null };
         } else {
-          analysis = 'AI model not supported in this deployment';
-          aiResult = { success: false, error: 'Unsupported AI model' };
+          analysis = "AI model not supported in this deployment";
+          aiResult = { success: false, error: "Unsupported AI model" };
         }
       } catch (error) {
-        console.error('AI analysis failed:', error.message);
-        analysis = 'Error processing with AI: ' + error.message;
+        console.error("AI analysis failed:", error.message);
+        analysis = "Error processing with AI: " + error.message;
         aiResult = { success: false, error: error.message };
       }
 
@@ -84,10 +109,10 @@ export class ScoopService {
         query: request.query,
         platforms: request.platforms,
         aiModel: request.aiModel,
-        timeRange: request.timeRange || 'week',
+        timeRange: request.timeRange || "week",
         keywords: request.keywords,
         limit: request.limit || 10,
-        sort: request.sort || 'relevance',
+        sort: request.sort || "relevance",
         dataCount: allData.length,
         platformResults,
         aiResult,
@@ -96,7 +121,7 @@ export class ScoopService {
         timestamp: new Date().toISOString(),
       };
     } catch (error) {
-      console.error('ScoopService Error:', error);
+      console.error("ScoopService Error:", error);
       return {
         success: false,
         error: error.message,
@@ -111,7 +136,7 @@ export class ScoopService {
         platformResults: {},
         aiResult: { success: false, error: error.message },
         rawData: [],
-        analysis: 'Error processing request',
+        analysis: "Error processing request",
         timestamp: new Date().toISOString(),
       };
     }
@@ -120,28 +145,28 @@ export class ScoopService {
   async getSupportedPlatforms() {
     return [
       {
-        name: 'reddit',
-        description: 'Reddit social media platform',
+        name: "reddit",
+        description: "Reddit social media platform",
         supported: true,
-        endpoints: ['search', 'subreddit'],
+        endpoints: ["search", "subreddit"],
       },
       {
-        name: 'twitter',
-        description: 'Twitter/X social media platform',
-        supported: false,
-        note: 'Coming soon',
+        name: "twitter",
+        description: "Twitter/X social media platform",
+        supported: true,
+        endpoints: ["search", "user"],
       },
       {
-        name: 'linkedin',
-        description: 'LinkedIn professional network',
+        name: "linkedin",
+        description: "LinkedIn professional network",
         supported: false,
-        note: 'Coming soon',
+        note: "Coming soon",
       },
       {
-        name: 'quora',
-        description: 'Quora Q&A platform',
+        name: "quora",
+        description: "Quora Q&A platform",
         supported: false,
-        note: 'Coming soon',
+        note: "Coming soon",
       },
     ];
   }
@@ -149,20 +174,20 @@ export class ScoopService {
   async getSupportedAIModels() {
     return [
       {
-        name: 'gemini-1.5-flash',
-        description: 'Fast and efficient model for most tasks',
+        name: "gemini-1.5-flash",
+        description: "Fast and efficient model for most tasks",
         supported: true,
         maxTokens: 8192,
       },
       {
-        name: 'gemini-pro',
-        description: 'High-quality model for complex tasks',
+        name: "gemini-pro",
+        description: "High-quality model for complex tasks",
         supported: true,
         maxTokens: 30720,
       },
       {
-        name: 'gemini-1.5-pro',
-        description: 'Latest high-performance model',
+        name: "gemini-1.5-pro",
+        description: "Latest high-performance model",
         supported: true,
         maxTokens: 2048000,
       },

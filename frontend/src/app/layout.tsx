@@ -1,13 +1,14 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { appConfig } from "@/config/app.config";
+import "./globals.css";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'Scoop - AI-Powered Social Media Intelligence',
-  description: 'Aggregate and analyze information from social media platforms with AI',
-  keywords: ['social media', 'AI', 'intelligence', 'aggregation', 'analysis'],
+  title: `${appConfig.app.name} - ${appConfig.app.description}`,
+  description: appConfig.app.description,
+  keywords: ["social media", "AI", "intelligence", "aggregation", "analysis"],
 };
 
 export default function RootLayout({
@@ -17,9 +18,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        {children}
-      </body>
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossOrigin="anonymous"
+          referrerPolicy="no-referrer"
+        />
+      </head>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }

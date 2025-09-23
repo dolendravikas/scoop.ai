@@ -1,0 +1,237 @@
+.resultsSection {
+  margin-top: 2rem;
+}
+
+.errorContainer {
+  background-color: #7f1d1d;
+  border: 1px solid #dc2626;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.errorTitle {
+  color: #fca5a5;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.errorMessage {
+  color: #fecaca;
+  font-size: 0.875rem;
+}
+
+.noResultsContainer {
+  background-color: #78350f;
+  border: 1px solid #d97706;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.noResultsTitle {
+  color: #fbbf24;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+.noResultsMessage {
+  color: #fde68a;
+  font-size: 0.875rem;
+}
+
+.analysisContainer {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.analysisTitle {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.aiModel {
+  background-color: #2563eb;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.analysisInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.infoItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.infoLabel {
+  color: #9ca3af;
+  font-size: 0.875rem;
+  min-width: 6rem;
+}
+
+.infoValue {
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.analysisContent {
+  margin-top: 1.5rem;
+}
+
+.analysisSubtitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 0.75rem;
+}
+
+.analysisText {
+  background-color: #111827;
+  border: 1px solid #4b5563;
+  border-radius: 0.375rem;
+  padding: 1rem;
+  color: #d1d5db;
+  white-space: pre-wrap;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  font-family: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas,
+    "Courier New", monospace;
+}
+
+.rawDataContainer {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.rawDataTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.platformSection {
+  margin-bottom: 1.5rem;
+}
+
+.platformHeader {
+  font-size: 1rem;
+  font-weight: 500;
+  color: white;
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.platformIcon {
+  color: #60a5fa;
+  font-size: 1rem;
+}
+
+.postsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 20rem;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.postsContainer::-webkit-scrollbar {
+  width: 4px;
+}
+
+.postsContainer::-webkit-scrollbar-track {
+  background: #374151;
+  border-radius: 2px;
+}
+
+.postsContainer::-webkit-scrollbar-thumb {
+  background: #6b7280;
+  border-radius: 2px;
+}
+
+.postsContainer::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+.postItem {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  border-radius: 0.375rem;
+  padding: 1rem;
+  transition: all 0.2s ease;
+}
+
+.postItem:hover {
+  background-color: #374151;
+  border-color: #4b5563;
+  transform: translateY(-1px);
+}
+
+.postContent {
+  color: white;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.postMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  gap: 1rem;
+}
+
+.postAuthor {
+  font-weight: 500;
+  color: #d1d5db;
+}
+
+.postDate {
+  color: #9ca3af;
+}
+
+.postLink {
+  color: #60a5fa;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.postLink:hover {
+  color: #93c5fd;
+  text-decoration: underline;
+}
+
+.morePosts {
+  text-align: center;
+  color: #9ca3af;
+  font-size: 0.875rem;
+  padding: 0.5rem;
+  font-style: italic;
+}
